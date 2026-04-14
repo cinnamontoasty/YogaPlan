@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Yoga Plan">
+<meta name="theme-color" content="#070c15">
+<title>Your Daily Yoga Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070c15;
+    --bg2: #0b1220;
+    --bg3: #0e1728;
+    --border: #1a2840;
+    --border2: #243450;
+    --text: #ddd6c8;
+    --text2: #8898b8;
+    --text3: #3a5070;
+    --prog-slow: #7ab8f5;
+    --prog-fast: #f5a623;
+    --yoga-slow: #4a7dca;
+    --yoga-fast: #b87020;
+    --green: #5a9a6a;
+    --green-bg: #091810;
+    --green-border: #1a3a22;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; background: var(--bg); }
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--text);
+    overscroll-behavior: none;
+  }
+  .app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: linear-gradient(160deg, #0c1828 0%, #111e38 55%, #0c1828 100%);
+    border-bottom: 1px solid var(--border);
+    padding: calc(var(--safe-top) + 20px) 20px 18px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .header-glow {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 25% 50%, rgba(122,184,245,0.08) 0%, transparent 55%),
+      radial-gradient(ellipse at 75% 50%, rgba(245,166,35,0.08) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 4px; color: var(--yoga-slow);
+    text-transform: uppercase; margin-bottom: 7px;
+  }
+  .header h1 {
+    font-size: clamp(22px, 6vw, 30px); font-weight: 300;
+    color: #eee8d8; letter-spacing: -0.3px; margin-bottom: 4px;
+  }
+  .header-sub {
+    font-size: 13px; color: var(--text3); font-style: italic; margin-bottom: 14px;
+  }
+  .legend {
+    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 5px;
+    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3);
+  }
+  .legend-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ── Status bar ── */
+  .status-bar {
+    margin: 12px 14px 0;
+    padding: 10px 14px;
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: 10px;
+    font-size: 12px; color: var(--green); line-height: 1.6;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .status-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── Week tabs ── */
+  .week-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: #090e1a;
+    margin-top: 12px;
+    flex-shrink: 0;
+  }
+  .week-tab {
+    flex: 1; padding: 12px 4px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Cormorant Garamond', serif; font-size: 13px;
+    color: var(--text3);
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .week-tab.active { color: var(--text); border-bottom-color: var(--yoga-slow); }
+
+  /* ── Grid ── */
+  .grid-wrap { padding: 14px; }
+  .day-names {
+    display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-bottom: 5px;
+  }
+  .day-name {
+    text-align: center;
+    font-family: 'DM Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; color: var(--text3); text-transform: uppercase;
+  }
+  .day-grid {
+    display: grid; grid-template-columns: repeat(7,1fr); gap: 4px;
+  }
+  .day-card {
+    background: #0c1422;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 9px 3px 7px;
+    cursor: pointer;
+    text-align: center;
+    min-height: 84px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    transition: all 0.2s;
+    position: relative;
+    -webkit-user-select: none; user-select: none;
+  }
+  .day-card.past { background: #08101a; opacity: 0.42; }
+  .day-card.current { background: #0c1e10; border: 2px solid #4a9a5a; box-shadow: 0 0 10px #4a9a5a33; }
+  .day-card.selected { border-width: 2px; }
+  .day-card:active { transform: scale(0.95); }
+  .current-pip {
+    position: absolute; top: 3px; right: 3px;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--green); box-shadow: 0 0 5px var(--green);
+  }
+  .day-num {
+    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3);
+  }
+  .day-card.past .day-num { color: #1e2c3c; }
+  .day-dot {
+    width: 8px; height: 8px; border-radius: 50%; margin: 2px auto;
+  }
+  .prog-label {
+    font-family: 'DM Mono', monospace; font-size: 7.5px;
+    color: var(--yoga-slow); letter-spacing: 0.3px;
+  }
+  .focus-emoji { font-size: 10px; }
+
+  /* ── Detail card ── */
+  .detail-card {
+    margin-top: 14px;
+    background: linear-gradient(135deg, #0a1622 0%, #0e1c2e 100%);
+    border-radius: 13px;
+    padding: 18px 15px;
+    animation: fadeUp 0.22s ease;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 11px; }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 1.5px;
+    padding: 3px 9px; border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+  }
+  .detail-title {
+    font-size: 20px; font-weight: 300; color: #eee8d8;
+    letter-spacing: -0.3px; margin-bottom: 3px;
+  }
+  .detail-sub {
+    font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 13px;
+  }
+  .status-pill {
+    padding: 8px 12px; border-radius: 7px;
+    border-left: 3px solid; font-size: 12px; margin-bottom: 11px;
+    line-height: 1.5;
+  }
+  .how-to {
+    padding: 10px 13px;
+    background: rgba(255,255,255,0.025);
+    border-radius: 7px;
+    font-size: 12px; color: var(--text2); line-height: 1.65;
+  }
+  .how-to strong { color: #9090b0; }
+  .detail-footer {
+    margin-top: 11px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: #263040; text-align: right;
+  }
+
+  /* ── Program tracker ── */
+  .tracker {
+    margin: 0 14px 14px;
+    padding: 14px;
+    background: #090e1a;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .tracker-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 2px; color: var(--text3);
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .tracker-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 10px; border-radius: 7px; margin-bottom: 4px;
+    cursor: pointer; transition: background 0.15s;
+    border: 1px solid transparent;
+  }
+  .tracker-row:active { opacity: 0.7; }
+  .tracker-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .tracker-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--text3); width: 38px; flex-shrink: 0;
+  }
+  .tracker-name { font-size: 12px; flex: 1; }
+  .tracker-status {
+    font-family: 'DM Mono', monospace; font-size: 10px; flex-shrink: 0;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin: 0 14px calc(var(--safe-bottom) + 20px);
+    padding: 12px 14px;
+    background: #090e1a;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--text3); line-height: 1.9; text-align: center;
+  }
+  .footer strong { color: var(--text2); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-glow"></div>
+    <div style="position:relative">
+      <div class="header-eyebrow">Apple Fitness+ · 28-Day Repeating Cycle</div>
+      <h1>Your Daily Yoga Practice</h1>
+      <div class="header-sub">10 minutes · Every day · Loop from Day 1 each month</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#7ab8f5;box-shadow:0 0 5px #7ab8f5"></div>Program — Slow</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f5a623;box-shadow:0 0 5px #f5a623"></div>Program — Energetic</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4a7dca;box-shadow:0 0 5px #4a7dca"></div>Yoga — Slow</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#b87020;box-shadow:0 0 5px #b87020"></div>Yoga — Energetic</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="status-icon">📍</span>
+    <span>You're on <strong style="color:#7abd8a">Day 18</strong>. Workouts 1–5 of <em>Build a Yoga Habit</em> are done. Remaining program workouts are on <strong style="color:#7abd8a">Days 20, 23 &amp; 26</strong> — finishing the program over the next 1½ weeks.</span>
+  </div>
+
+  <!-- Week tabs -->
+  <div class="week-tabs" id="weekTabs"></div>
+
+  <!-- Grid + detail -->
+  <div class="grid-wrap" id="gridWrap">
+    <div class="day-names">
+      <div class="day-name">Mon</div><div class="day-name">Tue</div>
+      <div class="day-name">Wed</div><div class="day-name">Thu</div>
+      <div class="day-name">Fri</div><div class="day-name">Sat</div>
+      <div class="day-name">Sun</div>
+    </div>
+    <div class="day-grid" id="dayGrid"></div>
+    <div id="detailCard"></div>
+  </div>
+
+  <!-- Program tracker -->
+  <div class="tracker">
+    <div class="tracker-title">Build a Yoga Habit — All 8 Workouts</div>
+    <div id="trackerRows"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <strong>How to use:</strong> Tap any day to see what to open in Fitness+.<br>
+    After Day 28, loop back to Day 1 and repeat every month. 🔁
+  </div>
+
+</div>
+
+<script>
+const PROGRAM = [
+  { id:"p1", label:"Foundation Flow",       type:"slow",      focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 1, Workout 1' },
+  { id:"p2", label:"Wake Up & Energise",    type:"energetic", focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 1, Workout 2' },
+  { id:"p3", label:"Ground & Restore",      type:"slow",      focus:"Lower Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 2, Workout 1' },
+  { id:"p4", label:"Strength & Flow",       type:"energetic", focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 2, Workout 2' },
+  { id:"p5", label:"Release & Renew",       type:"slow",      focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 3, Workout 1' },
+  { id:"p6", label:"Power Vinyasa",         type:"energetic", focus:"Lower Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 3, Workout 2' },
+  { id:"p7", label:"Deep Stretch & Breathe",type:"slow",      focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 4, Workout 1' },
+  { id:"p8", label:"Vitality Flow",         type:"energetic", focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 4, Workout 2' },
+];
+
+const FILLER = [
+  { label:"Chill Vibes — Neck & Shoulder Release", type:"slow",      focus:"Upper Body", trainer:"Jessica Skye",  note:"Fitness+ → Yoga → filter Jessica Skye, 10 min → choose a Chill Vibes slow flow" },
+  { label:"Standing Strength Flow",                type:"energetic", focus:"Lower Body", trainer:"Dustin Brown",  note:"Fitness+ → Yoga → filter Dustin Brown, 10 min → pick a standing/lower body flow" },
+  { label:"Hip Opening & Restore",                 type:"slow",      focus:"Lower Body", trainer:"Jonelle Lewis", note:"Fitness+ → Yoga → filter Jonelle Lewis, 10 min → pick a hip opening slow flow" },
+  { label:"Core & Balance Flow",                   type:"energetic", focus:"Core",       trainer:"Molly Fox",     note:"Fitness+ → Yoga → filter Molly Fox, 10 min → pick a core & balance session" },
+  { label:"Spinal Mobility & Chest Opener",        type:"slow",      focus:"Upper Body", trainer:"Dustin Brown",  note:"Fitness+ → Yoga → filter Dustin Brown, 10 min → pick a spinal/upper body flow" },
+  { label:"Sun Salutation Flow",                   type:"energetic", focus:"Full Body",  trainer:"Jonelle Lewis", note:"Fitness+ → Yoga → filter Jonelle Lewis, 10 min → pick a sun salutation flow" },
+  { label:"Yin Deep Stretch",                      type:"slow",      focus:"Full Body",  trainer:"Dustin Brown",  note:"Fitness+ → Yoga → filter Dustin Brown, 10 min → pick a yin/deep stretch session" },
+  { label:"Warrior Series",                        type:"energetic", focus:"Lower Body", trainer:"Jonelle Lewis", note:"Fitness+ → Yoga → filter Jonelle Lewis, 10 min → pick a warrior flow" },
+  { label:"Restorative Calm",                      type:"slow",      focus:"Full Body",  trainer:"Jessica Skye",  note:"Fitness+ → Yoga → filter Jessica Skye, 10 min → pick a restorative/calm flow" },
+  { label:"Arm Strength & Balance",                type:"energetic", focus:"Upper Body", trainer:"Dustin Brown",  note:"Fitness+ → Yoga → filter Dustin Brown, 10 min → pick an arm/upper body flow" },
+  { label:"Hamstring & Hip Release",               type:"slow",      focus:"Lower Body", trainer:"Jessica Skye",  note:"Fitness+ → Yoga → filter Jessica Skye, 10 min → pick a hamstring/hip slow flow" },
+  { label:"Energising Morning Flow",               type:"energetic", focus:"Full Body",  trainer:"Molly Fox",     note:"Fitness+ → Yoga → filter Molly Fox, 10 min → pick an energising morning flow" },
+  { label:"Twist & Detox",                         type:"slow",      focus:"Core",       trainer:"Jonelle Lewis", note:"Fitness+ → Yoga → filter Jonelle Lewis, 10 min → pick a twisting/detox flow" },
+  { label:"Flow & Fire",                           type:"energetic", focus:"Core",       trainer:"Jessica Skye",  note:"Fitness+ → Yoga → filter Jessica Skye, 10 min → pick a fire/core flow" },
+  { label:"Glute & Quad Opener",                   type:"slow",      focus:"Lower Body", trainer:"Dustin Brown",  note:"Fitness+ → Yoga → filter Dustin Brown, 10 min → pick a glute/quad slow flow" },
+  { label:"Standing Balance Flow",                 type:"energetic", focus:"Lower Body", trainer:"Jessica Skye",  note:"Fitness+ → Yoga → filter Jessica Skye, 10 min → pick a standing balance flow" },
+  { label:"Back Body Release",                     type:"slow",      focus:"Upper Body", trainer:"Molly Fox",     note:"Fitness+ → Yoga → filter Molly Fox, 10 min → pick a back/upper body release" },
+  { label:"Power Flow",                            type:"energetic", focus:"Full Body",  trainer:"Dustin Brown",  note:"Fitness+ → Yoga → filter Dustin Brown, 10 min → pick a power/full body flow" },
+  { label:"Seated Restore",                        type:"slow",      focus:"Full Body",  trainer:"Jonelle Lewis", note:"Fitness+ → Yoga → filter Jonelle Lewis, 10 min → pick a seated/restorative session" },
+  { label:"Breath & Flow",                         type:"energetic", focus:"Upper Body", trainer:"Molly Fox",     note:"Fitness+ → Yoga → filter Molly Fox, 10 min → pick a breathwork/flow session" },
+];
+
+// Program workouts on days (0-indexed): 0,3,7,11,15,19,22,25
+const PROG_DAYS = [0,3,7,11,15,19,22,25];
+
+const SCHEDULE = (() => {
+  const days = Array(28).fill(null);
+  PROG_DAYS.forEach((d,i) => days[d] = { ...PROGRAM[i], tag:"PROGRAM" });
+  let fi = 0;
+  for (let i=0;i<28;i++) if (!days[i]) days[i] = { ...FILLER[fi++], tag:"YOGA" };
+  return days;
+})();
+
+const CURRENT_DAY = 17; // 0-indexed = Day 18
+const DONE_THROUGH = 16;
+
+const FOCUS_EMOJI = { "Full Body":"🧘", "Upper Body":"💪", "Lower Body":"🦵", "Core":"🔥" };
+const DAYS_OF_WEEK = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+function accentColor(w) {
+  if (w.tag==="PROGRAM") return w.type==="slow" ? "#7ab8f5" : "#f5a623";
+  return w.type==="slow" ? "#4a7dca" : "#b87020";
+}
+
+let activeWeek = Math.floor(CURRENT_DAY/7);
+let selectedDay = CURRENT_DAY;
+
+function render() {
+  renderTabs();
+  renderGrid();
+  renderDetail();
+  renderTracker();
+}
+
+function renderTabs() {
+  const el = document.getElementById("weekTabs");
+  el.innerHTML = ["Week 1","Week 2","Week 3","Week 4"].map((label,w) => `
+    <button class="week-tab ${w===activeWeek?"active":""}" onclick="selectWeek(${w})">${label}</button>
+  `).join("");
+}
+
+function renderGrid() {
+  const grid = document.getElementById("dayGrid");
+  grid.innerHTML = Array(7).fill(null).map((_,dow) => {
+    const i = activeWeek*7+dow;
+    const w = SCHEDULE[i];
+    const ac = accentColor(w);
+    const past = i<=DONE_THROUGH;
+    const curr = i===CURRENT_DAY;
+    const sel = i===selectedDay;
+    const isP = w.tag==="PROGRAM";
+    const dotBg = past && !curr ? "#182030" : ac;
+    const dotShadow = past && !curr ? "none" : `0 0 5px ${ac}88`;
+    let cardClass = "day-card";
+    if (past && !curr) cardClass += " past";
+    else if (curr) cardClass += " current";
+    if (sel) cardClass += " selected";
+    const borderStyle = sel
+      ? `border-color:${ac};border-width:2px`
+      : curr ? "" : "";
+    const boxShadow = sel ? `box-shadow:0 0 12px ${ac}44` : "";
+    return `
+      <div class="${cardClass}" style="${borderStyle};${boxShadow}" onclick="selectDay(${i})">
+        ${curr ? '<div class="current-pip"></div>' : ""}
+        <div class="day-num">Day ${i+1}</div>
+        <div class="day-dot" style="background:${dotBg};box-shadow:${dotShadow}"></div>
+        ${isP && !past ? '<div class="prog-label">PROG</div>' : '<div style="height:12px"></div>'}
+        <div class="focus-emoji">${FOCUS_EMOJI[w.focus]}</div>
+      </div>`;
+  }).join("");
+}
+
+function renderDetail() {
+  const el = document.getElementById("detailCard");
+  if (selectedDay===null) { el.innerHTML=""; return; }
+  const w = SCHEDULE[selectedDay];
+  const ac = accentColor(w);
+  const past = selectedDay<=DONE_THROUGH;
+  const curr = selectedDay===CURRENT_DAY;
+  const upcoming = !past && !curr;
+  const progIdx = PROG_DAYS.indexOf(selectedDay);
+
+  const tag1color = w.tag==="PROGRAM" ? "#6ab0e8" : "#4a7dca";
+  const tag1text  = w.tag==="PROGRAM" ? "📋 BUILD A YOGA HABIT" : "🧘 YOGA";
+  const tag2color = w.type==="slow" ? "#6ab0e8" : "#e8a030";
+  const tag2text  = w.type==="slow" ? "🌙 SLOW FLOW" : "⚡ ENERGETIC";
+
+  let statusPill = "";
+  if (curr) statusPill = `<div class="status-pill" style="background:#0b1c10;border-color:#4a9a5a;color:#5a9a6a">📍 Today's practice</div>`;
+  else if (past) statusPill = `<div class="status-pill" style="background:#0c141e;border-color:#1e3050;color:#304060">✓ Already completed</div>`;
+  else if (upcoming && w.tag==="PROGRAM") {
+    const msg = progIdx>=5 ? "One of your 3 remaining program workouts 🏁" : "Program workout — coming up!";
+    statusPill = `<div class="status-pill" style="background:#09180d;border-color:#2a5038;color:#4a8a5a">${msg}</div>`;
+  }
+
+  el.innerHTML = `
+    <div class="detail-card" style="border:1px solid ${ac}55">
+      <div class="tags">
+        <span class="tag" style="color:${tag1color};border-color:${tag1color}44">${tag1text}</span>
+        <span class="tag" style="color:${tag2color};border-color:${tag2color}44">${tag2text}</span>
+        <span class="tag" style="color:#506070;border-color:#30405044">${FOCUS_EMOJI[w.focus]} ${w.focus}</span>
+      </div>
+      <div class="detail-title">${w.label}</div>
+      <div class="detail-sub">with ${w.trainer} · 10 minutes</div>
+      ${statusPill}
+      <div class="how-to"><strong>How to find it:</strong> ${w.note}</div>
+      <div class="detail-footer">Day ${selectedDay+1} of 28 · ${DAYS_OF_WEEK[selectedDay%7]}</div>
+    </div>`;
+}
+
+function renderTracker() {
+  const el = document.getElementById("trackerRows");
+  el.innerHTML = PROG_DAYS.map((d,i) => {
+    const done = d<=DONE_THROUGH;
+    const curr = d===CURRENT_DAY;
+    const p = PROGRAM[i];
+    const dotColor = done&&!curr ? "#182030" : p.type==="slow" ? "#7ab8f5" : "#f5a623";
+    const dotShadow = done&&!curr ? "none" : `0 0 5px ${p.type==="slow"?"#7ab8f5":"#f5a623"}`;
+    const rowBg = curr ? "#0b1c10" : done ? "#080c14" : "#0c1420";
+    const rowBorder = curr ? "#2a5038" : done ? "#121c2c" : "#16243a";
+    const nameColor = done&&!curr ? "#263040" : "#b0bcd0";
+    const statusColor = curr ? "#5a9a6a" : done ? "#263040" : i>=5 ? "#4a7a5a" : "#304060";
+    const statusText = curr ? "← today" : done ? "✓" : i>=5 ? "upcoming" : "";
+    return `
+      <div class="tracker-row" style="background:${rowBg};border-color:${rowBorder};opacity:${done&&!curr?0.45:1}"
+           onclick="jumpTo(${d})">
+        <div class="tracker-dot" style="background:${dotColor};box-shadow:${dotShadow}"></div>
+        <div class="tracker-day">Day ${d+1}</div>
+        <div class="tracker-name" style="color:${nameColor}">${p.label}</div>
+        <div class="tracker-status" style="color:${statusColor}">${statusText}</div>
+      </div>`;
+  }).join("");
+}
+
+function selectWeek(w) {
+  activeWeek = w;
+  selectedDay = null;
+  render();
+}
+
+function selectDay(i) {
+  selectedDay = selectedDay===i ? null : i;
+  renderGrid();
+  renderDetail();
+  if (selectedDay!==null) {
+    setTimeout(() => {
+      document.getElementById("detailCard").scrollIntoView({ behavior:"smooth", block:"nearest" });
+    }, 50);
+  }
+}
+
+function jumpTo(d) {
+  activeWeek = Math.floor(d/7);
+  selectedDay = d;
+  render();
+  setTimeout(() => {
+    document.getElementById("detailCard").scrollIntoView({ behavior:"smooth", block:"nearest" });
+  }, 80);
+}
+
+render();
+</script>
+</body>
+</html>
