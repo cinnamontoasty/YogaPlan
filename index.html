@@ -16,7 +16,6 @@
     --bg2: #0b1220;
     --bg3: #0e1728;
     --border: #1a2840;
-    --border2: #243450;
     --text: #ddd6c8;
     --text2: #8898b8;
     --text3: #3a5070;
@@ -32,229 +31,145 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; background: var(--bg); }
-  body {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    color: var(--text);
-    overscroll-behavior: none;
-  }
-  .app {
-    max-width: 480px;
-    margin: 0 auto;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+  body { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--text); overscroll-behavior: none; }
+  .app { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
 
-  /* ── Header ── */
+  /* Header */
   .header {
     background: linear-gradient(160deg, #0c1828 0%, #111e38 55%, #0c1828 100%);
     border-bottom: 1px solid var(--border);
-    padding: calc(var(--safe-top) + 20px) 20px 18px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
+    padding: calc(var(--safe-top) + 20px) 20px 16px;
+    text-align: center; position: relative; overflow: hidden; flex-shrink: 0;
   }
   .header-glow {
     position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse at 25% 50%, rgba(122,184,245,0.08) 0%, transparent 55%),
-      radial-gradient(ellipse at 75% 50%, rgba(245,166,35,0.08) 0%, transparent 55%);
+    background: radial-gradient(ellipse at 25% 50%, rgba(122,184,245,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 50%, rgba(245,166,35,0.08) 0%, transparent 55%);
     pointer-events: none;
   }
-  .header-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; letter-spacing: 4px; color: var(--yoga-slow);
-    text-transform: uppercase; margin-bottom: 7px;
-  }
-  .header h1 {
-    font-size: clamp(22px, 6vw, 30px); font-weight: 300;
-    color: #eee8d8; letter-spacing: -0.3px; margin-bottom: 4px;
-  }
-  .header-sub {
-    font-size: 13px; color: var(--text3); font-style: italic; margin-bottom: 14px;
-  }
-  .legend {
-    display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
-  }
-  .legend-item {
-    display: flex; align-items: center; gap: 5px;
-    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3);
-  }
-  .legend-dot {
-    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-  }
+  .header-eyebrow { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:4px; color:var(--yoga-slow); text-transform:uppercase; margin-bottom:6px; }
+  .header h1 { font-size:clamp(21px,6vw,29px); font-weight:300; color:#eee8d8; letter-spacing:-0.3px; margin-bottom:3px; }
+  .header-sub { font-size:12px; color:var(--text3); font-style:italic; margin-bottom:13px; }
+  .legend { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:5px; font-family:'DM Mono',monospace; font-size:9px; color:var(--text3); }
+  .legend-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
 
-  /* ── Status bar ── */
-  .status-bar {
-    margin: 12px 14px 0;
-    padding: 10px 14px;
-    background: var(--green-bg);
-    border: 1px solid var(--green-border);
-    border-radius: 10px;
-    font-size: 12px; color: var(--green); line-height: 1.6;
-    display: flex; gap: 10px; align-items: flex-start;
+  /* Today bar */
+  .today-bar {
+    margin:12px 14px 0;
+    padding:11px 14px;
+    background:var(--green-bg);
+    border:1px solid var(--green-border);
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
   }
-  .status-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .today-bar-text { font-size:13px; color:var(--green); line-height:1.5; flex:1; }
+  .today-bar-text strong { color:#7abd8a; }
+  .done-btn {
+    background:#1a4a28; border:1px solid #2a6a38; border-radius:8px;
+    color:#7abd8a; font-family:'DM Mono',monospace; font-size:11px;
+    padding:8px 12px; cursor:pointer; white-space:nowrap; flex-shrink:0;
+    transition:all 0.15s;
+  }
+  .done-btn:active { background:#2a5a38; transform:scale(0.96); }
 
-  /* ── Week tabs ── */
-  .week-tabs {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-    background: #090e1a;
-    margin-top: 12px;
-    flex-shrink: 0;
+  /* Backup bar */
+  .backup-bar {
+    margin:8px 14px 0;
+    display:flex; gap:8px;
   }
+  .backup-btn, .restore-btn {
+    flex:1; padding:9px 8px;
+    border-radius:8px; border:1px solid var(--border);
+    font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.5px;
+    cursor:pointer; transition:all 0.15s; text-align:center;
+  }
+  .backup-btn { background:#0a1020; color:var(--text2); }
+  .backup-btn:active { background:#0e1830; }
+  .restore-btn { background:#0a1020; color:var(--text2); }
+  .restore-btn:active { background:#0e1830; }
+
+  /* Toast */
+  .toast {
+    position:fixed; bottom:calc(var(--safe-bottom) + 24px); left:50%; transform:translateX(-50%);
+    background:#1a3a28; border:1px solid #2a5a38; border-radius:10px;
+    padding:10px 20px; font-family:'DM Mono',monospace; font-size:11px; color:#7abd8a;
+    white-space:nowrap; z-index:100; opacity:0; transition:opacity 0.3s;
+    pointer-events:none;
+  }
+  .toast.show { opacity:1; }
+
+  /* Week tabs */
+  .week-tabs { display:flex; border-bottom:1px solid var(--border); background:#090e1a; margin-top:12px; flex-shrink:0; }
   .week-tab {
-    flex: 1; padding: 12px 4px;
-    background: none; border: none; cursor: pointer;
-    font-family: 'Cormorant Garamond', serif; font-size: 13px;
-    color: var(--text3);
-    border-bottom: 2px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
+    flex:1; padding:12px 4px; background:none; border:none; cursor:pointer;
+    font-family:'Cormorant Garamond',serif; font-size:13px; color:var(--text3);
+    border-bottom:2px solid transparent; transition:color 0.2s, border-color 0.2s;
   }
-  .week-tab.active { color: var(--text); border-bottom-color: var(--yoga-slow); }
+  .week-tab.active { color:var(--text); border-bottom-color:var(--yoga-slow); }
 
-  /* ── Grid ── */
-  .grid-wrap { padding: 14px; }
-  .day-names {
-    display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin-bottom: 5px;
-  }
-  .day-name {
-    text-align: center;
-    font-family: 'DM Mono', monospace; font-size: 9px;
-    letter-spacing: 1px; color: var(--text3); text-transform: uppercase;
-  }
-  .day-grid {
-    display: grid; grid-template-columns: repeat(7,1fr); gap: 4px;
-  }
+  /* Grid */
+  .grid-wrap { padding:14px; }
+  .day-names { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:5px; }
+  .day-name { text-align:center; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; color:var(--text3); text-transform:uppercase; }
+  .day-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
   .day-card {
-    background: #0c1422;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 9px 3px 7px;
-    cursor: pointer;
-    text-align: center;
-    min-height: 84px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: space-between;
-    transition: all 0.2s;
-    position: relative;
-    -webkit-user-select: none; user-select: none;
+    background:#0c1422; border:1px solid var(--border); border-radius:9px;
+    padding:9px 3px 7px; cursor:pointer; text-align:center;
+    min-height:84px; display:flex; flex-direction:column;
+    align-items:center; justify-content:space-between;
+    transition:all 0.2s; position:relative;
+    -webkit-user-select:none; user-select:none;
   }
-  .day-card.past { background: #08101a; opacity: 0.42; }
-  .day-card.current { background: #0c1e10; border: 2px solid #4a9a5a; box-shadow: 0 0 10px #4a9a5a33; }
-  .day-card.selected { border-width: 2px; }
-  .day-card:active { transform: scale(0.95); }
-  .current-pip {
-    position: absolute; top: 3px; right: 3px;
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--green); box-shadow: 0 0 5px var(--green);
-  }
-  .day-num {
-    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3);
-  }
-  .day-card.past .day-num { color: #1e2c3c; }
-  .day-dot {
-    width: 8px; height: 8px; border-radius: 50%; margin: 2px auto;
-  }
-  .prog-label {
-    font-family: 'DM Mono', monospace; font-size: 7.5px;
-    color: var(--yoga-slow); letter-spacing: 0.3px;
-  }
-  .focus-emoji { font-size: 10px; }
+  .day-card.past { background:#08101a; opacity:0.42; }
+  .day-card.current { background:#0c1e10; border:2px solid #4a9a5a; box-shadow:0 0 10px #4a9a5a33; opacity:1; }
+  .day-card.selected { border-width:2px; }
+  .day-card:active { transform:scale(0.95); }
+  .current-pip { position:absolute; top:3px; right:3px; width:5px; height:5px; border-radius:50%; background:var(--green); box-shadow:0 0 5px var(--green); }
+  .day-num { font-family:'DM Mono',monospace; font-size:9px; color:var(--text3); }
+  .day-card.past .day-num { color:#1e2c3c; }
+  .day-dot { width:8px; height:8px; border-radius:50%; margin:2px auto; }
+  .prog-label { font-family:'DM Mono',monospace; font-size:7.5px; color:var(--yoga-slow); letter-spacing:0.3px; }
+  .focus-emoji { font-size:10px; }
 
-  /* ── Detail card ── */
+  /* Detail */
   .detail-card {
-    margin-top: 14px;
-    background: linear-gradient(135deg, #0a1622 0%, #0e1c2e 100%);
-    border-radius: 13px;
-    padding: 18px 15px;
-    animation: fadeUp 0.22s ease;
+    margin-top:14px;
+    background:linear-gradient(135deg,#0a1622 0%,#0e1c2e 100%);
+    border-radius:13px; padding:18px 15px;
+    animation:fadeUp 0.22s ease;
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 11px; }
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; letter-spacing: 1.5px;
-    padding: 3px 9px; border-radius: 20px;
-    background: rgba(255,255,255,0.04);
-  }
-  .detail-title {
-    font-size: 20px; font-weight: 300; color: #eee8d8;
-    letter-spacing: -0.3px; margin-bottom: 3px;
-  }
-  .detail-sub {
-    font-size: 12px; color: var(--text3); font-style: italic; margin-bottom: 13px;
-  }
-  .status-pill {
-    padding: 8px 12px; border-radius: 7px;
-    border-left: 3px solid; font-size: 12px; margin-bottom: 11px;
-    line-height: 1.5;
-  }
-  .how-to {
-    padding: 10px 13px;
-    background: rgba(255,255,255,0.025);
-    border-radius: 7px;
-    font-size: 12px; color: var(--text2); line-height: 1.65;
-  }
-  .how-to strong { color: #9090b0; }
-  .detail-footer {
-    margin-top: 11px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; color: #263040; text-align: right;
-  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:11px; }
+  .tag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; padding:3px 9px; border-radius:20px; background:rgba(255,255,255,0.04); }
+  .detail-title { font-size:20px; font-weight:300; color:#eee8d8; letter-spacing:-0.3px; margin-bottom:3px; }
+  .detail-sub { font-size:12px; color:var(--text3); font-style:italic; margin-bottom:13px; }
+  .status-pill { padding:8px 12px; border-radius:7px; border-left:3px solid; font-size:12px; margin-bottom:11px; line-height:1.5; }
+  .how-to { padding:10px 13px; background:rgba(255,255,255,0.025); border-radius:7px; font-size:12px; color:var(--text2); line-height:1.65; }
+  .how-to strong { color:#9090b0; }
+  .detail-footer { margin-top:11px; font-family:'DM Mono',monospace; font-size:10px; color:#263040; text-align:right; }
 
-  /* ── Program tracker ── */
-  .tracker {
-    margin: 0 14px 14px;
-    padding: 14px;
-    background: #090e1a;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-  }
-  .tracker-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px; letter-spacing: 2px; color: var(--text3);
-    text-transform: uppercase; margin-bottom: 10px;
-  }
-  .tracker-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 7px 10px; border-radius: 7px; margin-bottom: 4px;
-    cursor: pointer; transition: background 0.15s;
-    border: 1px solid transparent;
-  }
-  .tracker-row:active { opacity: 0.7; }
-  .tracker-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-  .tracker-day {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; color: var(--text3); width: 38px; flex-shrink: 0;
-  }
-  .tracker-name { font-size: 12px; flex: 1; }
-  .tracker-status {
-    font-family: 'DM Mono', monospace; font-size: 10px; flex-shrink: 0;
-  }
+  /* Tracker */
+  .tracker { margin:0 14px 14px; padding:14px; background:#090e1a; border:1px solid var(--border); border-radius:10px; }
+  .tracker-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--text3); text-transform:uppercase; margin-bottom:10px; }
+  .tracker-row { display:flex; align-items:center; gap:10px; padding:7px 10px; border-radius:7px; margin-bottom:4px; cursor:pointer; border:1px solid transparent; transition:background 0.15s; }
+  .tracker-row:active { opacity:0.7; }
+  .tracker-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .tracker-day { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); width:38px; flex-shrink:0; }
+  .tracker-name { font-size:12px; flex:1; }
+  .tracker-status { font-family:'DM Mono',monospace; font-size:10px; flex-shrink:0; }
 
-  /* ── Footer ── */
-  .footer {
-    margin: 0 14px calc(var(--safe-bottom) + 20px);
-    padding: 12px 14px;
-    background: #090e1a;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px; color: var(--text3); line-height: 1.9; text-align: center;
-  }
-  .footer strong { color: var(--text2); }
+  /* Footer */
+  .footer { margin:0 14px calc(var(--safe-bottom) + 20px); padding:12px 14px; background:#090e1a; border:1px solid var(--border); border-radius:9px; font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); line-height:1.9; text-align:center; }
+  .footer strong { color:var(--text2); }
+
+  /* Hidden file input */
+  #restoreInput { display:none; }
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- Header -->
   <div class="header">
     <div class="header-glow"></div>
     <div style="position:relative">
@@ -270,11 +185,18 @@
     </div>
   </div>
 
-  <!-- Status bar -->
-  <div class="status-bar">
-    <span class="status-icon">📍</span>
-    <span>You're on <strong style="color:#7abd8a">Day 18</strong>. Workouts 1–5 of <em>Build a Yoga Habit</em> are done. Remaining program workouts are on <strong style="color:#7abd8a">Days 20, 23 &amp; 26</strong> — finishing the program over the next 1½ weeks.</span>
+  <!-- Today + Done button -->
+  <div class="today-bar">
+    <div class="today-bar-text" id="todayText">Loading...</div>
+    <button class="done-btn" onclick="markDone()">✓ Done!</button>
   </div>
+
+  <!-- Backup / Restore -->
+  <div class="backup-bar">
+    <button class="backup-btn" onclick="backupProgress()">💾 Backup to Files</button>
+    <button class="restore-btn" onclick="document.getElementById('restoreInput').click()">📂 Restore from Files</button>
+  </div>
+  <input type="file" id="restoreInput" accept=".json" onchange="restoreProgress(event)">
 
   <!-- Week tabs -->
   <div class="week-tabs" id="weekTabs"></div>
@@ -300,21 +222,26 @@
   <!-- Footer -->
   <div class="footer">
     <strong>How to use:</strong> Tap any day to see what to open in Fitness+.<br>
-    After Day 28, loop back to Day 1 and repeat every month. 🔁
+    Tap ✓ Done! after each practice to advance. After Day 28, loop back to Day 1. 🔁<br>
+    Backup regularly to Files so you never lose your progress.
   </div>
 
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
+// ── Data ──────────────────────────────────────────────────────────────────────
+
 const PROGRAM = [
-  { id:"p1", label:"Foundation Flow",       type:"slow",      focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 1, Workout 1' },
-  { id:"p2", label:"Wake Up & Energise",    type:"energetic", focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 1, Workout 2' },
-  { id:"p3", label:"Ground & Restore",      type:"slow",      focus:"Lower Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 2, Workout 1' },
-  { id:"p4", label:"Strength & Flow",       type:"energetic", focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 2, Workout 2' },
-  { id:"p5", label:"Release & Renew",       type:"slow",      focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 3, Workout 1' },
-  { id:"p6", label:"Power Vinyasa",         type:"energetic", focus:"Lower Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 3, Workout 2' },
-  { id:"p7", label:"Deep Stretch & Breathe",type:"slow",      focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 4, Workout 1' },
-  { id:"p8", label:"Vitality Flow",         type:"energetic", focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 4, Workout 2' },
+  { label:"Foundation Flow",        type:"slow",      focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 1, Workout 1' },
+  { label:"Wake Up & Energise",     type:"energetic", focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 1, Workout 2' },
+  { label:"Ground & Restore",       type:"slow",      focus:"Lower Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 2, Workout 1' },
+  { label:"Strength & Flow",        type:"energetic", focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 2, Workout 2' },
+  { label:"Release & Renew",        type:"slow",      focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 3, Workout 1' },
+  { label:"Power Vinyasa",          type:"energetic", focus:"Lower Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 3, Workout 2' },
+  { label:"Deep Stretch & Breathe", type:"slow",      focus:"Full Body",  trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 4, Workout 1' },
+  { label:"Vitality Flow",          type:"energetic", focus:"Upper Body", trainer:"Jessica Skye", note:'Open "Build a Yoga Habit in 4 Weeks" in Fitness+ → Week 4, Workout 2' },
 ];
 
 const FILLER = [
@@ -340,8 +267,7 @@ const FILLER = [
   { label:"Breath & Flow",                         type:"energetic", focus:"Upper Body", trainer:"Molly Fox",     note:"Fitness+ → Yoga → filter Molly Fox, 10 min → pick a breathwork/flow session" },
 ];
 
-// Program workouts on days (0-indexed): 0,3,7,11,15,19,22,25
-const PROG_DAYS = [0,3,7,11,15,19,22,25];
+const PROG_DAYS = [0,3,7,11,15,19,22,25]; // 0-indexed days where program workouts fall
 
 const SCHEDULE = (() => {
   const days = Array(28).fill(null);
@@ -351,138 +277,244 @@ const SCHEDULE = (() => {
   return days;
 })();
 
-const CURRENT_DAY = 17; // 0-indexed = Day 18
-const DONE_THROUGH = 16;
-
 const FOCUS_EMOJI = { "Full Body":"🧘", "Upper Body":"💪", "Lower Body":"🦵", "Core":"🔥" };
-const DAYS_OF_WEEK = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const DAY_NAMES = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+const STORAGE_KEY = "yogaPlanCurrentDay";
+const DEFAULT_DAY = 17; // Day 18 (0-indexed) — where user currently is
+
+function loadCurrentDay() {
+  try {
+    const val = localStorage.getItem(STORAGE_KEY);
+    if (val !== null) return Math.min(Math.max(parseInt(val), 0), 27);
+  } catch(e) {}
+  return DEFAULT_DAY;
+}
+
+function saveCurrentDay(d) {
+  try { localStorage.setItem(STORAGE_KEY, String(d)); } catch(e) {}
+}
+
+let currentDay = loadCurrentDay();
+let activeWeek = Math.floor(currentDay / 7);
+let selectedDay = currentDay;
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 function accentColor(w) {
   if (w.tag==="PROGRAM") return w.type==="slow" ? "#7ab8f5" : "#f5a623";
   return w.type==="slow" ? "#4a7dca" : "#b87020";
 }
 
-let activeWeek = Math.floor(CURRENT_DAY/7);
-let selectedDay = CURRENT_DAY;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────────
+
+function markDone() {
+  if (currentDay >= 27) {
+    // Loop back to day 1
+    if (confirm("🎉 You've completed all 28 days! Ready to loop back to Day 1?")) {
+      currentDay = 0;
+      saveCurrentDay(currentDay);
+      activeWeek = 0;
+      selectedDay = 0;
+      render();
+      showToast("🔁 Looping back to Day 1!");
+    }
+    return;
+  }
+  currentDay++;
+  saveCurrentDay(currentDay);
+  activeWeek = Math.floor(currentDay / 7);
+  selectedDay = currentDay;
+  render();
+  showToast("✓ Great practice! On to Day " + (currentDay + 1));
+}
+
+function backupProgress() {
+  const data = {
+    app: "yogaPlan",
+    version: 1,
+    currentDay: currentDay,
+    savedAt: new Date().toISOString(),
+    note: "Your yoga plan progress — Day " + (currentDay + 1) + " of 28"
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "yoga-plan-backup.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast("💾 Backup saved! Store it in Files.");
+}
+
+function restoreProgress(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.app !== "yogaPlan" || typeof data.currentDay !== "number") {
+        alert("This doesn't look like a yoga plan backup file.");
+        return;
+      }
+      const day = Math.min(Math.max(data.currentDay, 0), 27);
+      if (confirm("Restore progress to Day " + (day + 1) + " of 28?")) {
+        currentDay = day;
+        saveCurrentDay(currentDay);
+        activeWeek = Math.floor(currentDay / 7);
+        selectedDay = currentDay;
+        render();
+        showToast("📂 Restored to Day " + (currentDay + 1) + "!");
+      }
+    } catch(err) {
+      alert("Couldn't read the backup file. Make sure it's a valid yoga plan backup.");
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ""; // reset so same file can be re-selected
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
 
 function render() {
+  renderTodayBar();
   renderTabs();
   renderGrid();
   renderDetail();
   renderTracker();
 }
 
+function renderTodayBar() {
+  const w = SCHEDULE[currentDay];
+  const isLast = currentDay === 27;
+  document.getElementById("todayText").innerHTML =
+    `Today: <strong>Day ${currentDay+1}</strong> — ${w.label}${isLast ? " &nbsp;🎉 Last day!" : ""}`;
+}
+
 function renderTabs() {
-  const el = document.getElementById("weekTabs");
-  el.innerHTML = ["Week 1","Week 2","Week 3","Week 4"].map((label,w) => `
-    <button class="week-tab ${w===activeWeek?"active":""}" onclick="selectWeek(${w})">${label}</button>
-  `).join("");
+  document.getElementById("weekTabs").innerHTML =
+    ["Week 1","Week 2","Week 3","Week 4"].map((label,w) =>
+      `<button class="week-tab ${w===activeWeek?"active":""}" onclick="selectWeek(${w})">${label}</button>`
+    ).join("");
 }
 
 function renderGrid() {
-  const grid = document.getElementById("dayGrid");
-  grid.innerHTML = Array(7).fill(null).map((_,dow) => {
-    const i = activeWeek*7+dow;
-    const w = SCHEDULE[i];
-    const ac = accentColor(w);
-    const past = i<=DONE_THROUGH;
-    const curr = i===CURRENT_DAY;
-    const sel = i===selectedDay;
-    const isP = w.tag==="PROGRAM";
-    const dotBg = past && !curr ? "#182030" : ac;
-    const dotShadow = past && !curr ? "none" : `0 0 5px ${ac}88`;
-    let cardClass = "day-card";
-    if (past && !curr) cardClass += " past";
-    else if (curr) cardClass += " current";
-    if (sel) cardClass += " selected";
-    const borderStyle = sel
-      ? `border-color:${ac};border-width:2px`
-      : curr ? "" : "";
-    const boxShadow = sel ? `box-shadow:0 0 12px ${ac}44` : "";
-    return `
-      <div class="${cardClass}" style="${borderStyle};${boxShadow}" onclick="selectDay(${i})">
-        ${curr ? '<div class="current-pip"></div>' : ""}
-        <div class="day-num">Day ${i+1}</div>
-        <div class="day-dot" style="background:${dotBg};box-shadow:${dotShadow}"></div>
-        ${isP && !past ? '<div class="prog-label">PROG</div>' : '<div style="height:12px"></div>'}
-        <div class="focus-emoji">${FOCUS_EMOJI[w.focus]}</div>
-      </div>`;
-  }).join("");
+  document.getElementById("dayGrid").innerHTML =
+    Array(7).fill(null).map((_,dow) => {
+      const i = activeWeek*7+dow;
+      const w = SCHEDULE[i];
+      const ac = accentColor(w);
+      const past = i < currentDay;
+      const curr = i === currentDay;
+      const sel  = i === selectedDay;
+      const isP  = w.tag === "PROGRAM";
+      const dotBg = past ? "#182030" : ac;
+      const dotShadow = past ? "none" : `0 0 5px ${ac}88`;
+      let cls = "day-card";
+      if (past) cls += " past";
+      else if (curr) cls += " current";
+      if (sel) cls += " selected";
+      const borderStyle = sel && !curr ? `border-color:${ac};border-width:2px;` : "";
+      const shadowStyle = sel ? `box-shadow:0 0 12px ${ac}44;` : "";
+      return `
+        <div class="${cls}" style="${borderStyle}${shadowStyle}" onclick="selectDay(${i})">
+          ${curr ? '<div class="current-pip"></div>' : ""}
+          <div class="day-num">Day ${i+1}</div>
+          <div class="day-dot" style="background:${dotBg};box-shadow:${dotShadow}"></div>
+          ${isP && !past ? '<div class="prog-label">PROG</div>' : '<div style="height:13px"></div>'}
+          <div class="focus-emoji">${FOCUS_EMOJI[w.focus]}</div>
+        </div>`;
+    }).join("");
 }
 
 function renderDetail() {
   const el = document.getElementById("detailCard");
-  if (selectedDay===null) { el.innerHTML=""; return; }
+  if (selectedDay === null) { el.innerHTML = ""; return; }
   const w = SCHEDULE[selectedDay];
   const ac = accentColor(w);
-  const past = selectedDay<=DONE_THROUGH;
-  const curr = selectedDay===CURRENT_DAY;
-  const upcoming = !past && !curr;
+  const past = selectedDay < currentDay;
+  const curr = selectedDay === currentDay;
   const progIdx = PROG_DAYS.indexOf(selectedDay);
 
-  const tag1color = w.tag==="PROGRAM" ? "#6ab0e8" : "#4a7dca";
-  const tag1text  = w.tag==="PROGRAM" ? "📋 BUILD A YOGA HABIT" : "🧘 YOGA";
-  const tag2color = w.type==="slow" ? "#6ab0e8" : "#e8a030";
-  const tag2text  = w.type==="slow" ? "🌙 SLOW FLOW" : "⚡ ENERGETIC";
+  const tag1c = w.tag==="PROGRAM" ? "#6ab0e8" : "#4a7dca";
+  const tag1t = w.tag==="PROGRAM" ? "📋 BUILD A YOGA HABIT" : "🧘 YOGA";
+  const tag2c = w.type==="slow" ? "#6ab0e8" : "#e8a030";
+  const tag2t = w.type==="slow" ? "🌙 SLOW FLOW" : "⚡ ENERGETIC";
 
-  let statusPill = "";
-  if (curr) statusPill = `<div class="status-pill" style="background:#0b1c10;border-color:#4a9a5a;color:#5a9a6a">📍 Today's practice</div>`;
-  else if (past) statusPill = `<div class="status-pill" style="background:#0c141e;border-color:#1e3050;color:#304060">✓ Already completed</div>`;
-  else if (upcoming && w.tag==="PROGRAM") {
-    const msg = progIdx>=5 ? "One of your 3 remaining program workouts 🏁" : "Program workout — coming up!";
-    statusPill = `<div class="status-pill" style="background:#09180d;border-color:#2a5038;color:#4a8a5a">${msg}</div>`;
+  let pill = "";
+  if (curr) pill = `<div class="status-pill" style="background:#0b1c10;border-color:#4a9a5a;color:#5a9a6a">📍 Today's practice — open Fitness+ and let's go!</div>`;
+  else if (past) pill = `<div class="status-pill" style="background:#0c141e;border-color:#1e3050;color:#304060">✓ Already completed</div>`;
+  else if (w.tag==="PROGRAM") {
+    const msg = progIdx >= 5 ? "One of your 3 remaining program workouts 🏁" : "Program workout — coming up!";
+    pill = `<div class="status-pill" style="background:#09180d;border-color:#2a5038;color:#4a8a5a">${msg}</div>`;
   }
 
   el.innerHTML = `
     <div class="detail-card" style="border:1px solid ${ac}55">
       <div class="tags">
-        <span class="tag" style="color:${tag1color};border-color:${tag1color}44">${tag1text}</span>
-        <span class="tag" style="color:${tag2color};border-color:${tag2color}44">${tag2text}</span>
+        <span class="tag" style="color:${tag1c};border-color:${tag1c}44">${tag1t}</span>
+        <span class="tag" style="color:${tag2c};border-color:${tag2c}44">${tag2t}</span>
         <span class="tag" style="color:#506070;border-color:#30405044">${FOCUS_EMOJI[w.focus]} ${w.focus}</span>
       </div>
       <div class="detail-title">${w.label}</div>
       <div class="detail-sub">with ${w.trainer} · 10 minutes</div>
-      ${statusPill}
+      ${pill}
       <div class="how-to"><strong>How to find it:</strong> ${w.note}</div>
-      <div class="detail-footer">Day ${selectedDay+1} of 28 · ${DAYS_OF_WEEK[selectedDay%7]}</div>
+      <div class="detail-footer">Day ${selectedDay+1} of 28 · ${DAY_NAMES[selectedDay%7]}</div>
     </div>`;
 }
 
 function renderTracker() {
-  const el = document.getElementById("trackerRows");
-  el.innerHTML = PROG_DAYS.map((d,i) => {
-    const done = d<=DONE_THROUGH;
-    const curr = d===CURRENT_DAY;
-    const p = PROGRAM[i];
-    const dotColor = done&&!curr ? "#182030" : p.type==="slow" ? "#7ab8f5" : "#f5a623";
-    const dotShadow = done&&!curr ? "none" : `0 0 5px ${p.type==="slow"?"#7ab8f5":"#f5a623"}`;
-    const rowBg = curr ? "#0b1c10" : done ? "#080c14" : "#0c1420";
-    const rowBorder = curr ? "#2a5038" : done ? "#121c2c" : "#16243a";
-    const nameColor = done&&!curr ? "#263040" : "#b0bcd0";
-    const statusColor = curr ? "#5a9a6a" : done ? "#263040" : i>=5 ? "#4a7a5a" : "#304060";
-    const statusText = curr ? "← today" : done ? "✓" : i>=5 ? "upcoming" : "";
-    return `
-      <div class="tracker-row" style="background:${rowBg};border-color:${rowBorder};opacity:${done&&!curr?0.45:1}"
-           onclick="jumpTo(${d})">
-        <div class="tracker-dot" style="background:${dotColor};box-shadow:${dotShadow}"></div>
-        <div class="tracker-day">Day ${d+1}</div>
-        <div class="tracker-name" style="color:${nameColor}">${p.label}</div>
-        <div class="tracker-status" style="color:${statusColor}">${statusText}</div>
-      </div>`;
-  }).join("");
+  document.getElementById("trackerRows").innerHTML =
+    PROG_DAYS.map((d,i) => {
+      const done = d < currentDay;
+      const curr = d === currentDay;
+      const p = PROGRAM[i];
+      const dotColor = done && !curr ? "#182030" : p.type==="slow" ? "#7ab8f5" : "#f5a623";
+      const dotShadow = done && !curr ? "none" : `0 0 5px ${p.type==="slow"?"#7ab8f5":"#f5a623"}`;
+      const rowBg = curr ? "#0b1c10" : done ? "#080c14" : "#0c1420";
+      const rowBorder = curr ? "#2a5038" : done ? "#121c2c" : "#16243a";
+      const nameColor = done && !curr ? "#263040" : "#b0bcd0";
+      const statusColor = curr ? "#5a9a6a" : done ? "#263040" : i>=5 ? "#4a7a5a" : "#304060";
+      const statusText = curr ? "← today" : done ? "✓" : i>=5 ? "upcoming" : "";
+      return `
+        <div class="tracker-row" style="background:${rowBg};border-color:${rowBorder};opacity:${done&&!curr?0.45:1}"
+             onclick="jumpTo(${d})">
+          <div class="tracker-dot" style="background:${dotColor};box-shadow:${dotShadow}"></div>
+          <div class="tracker-day">Day ${d+1}</div>
+          <div class="tracker-name" style="color:${nameColor}">${p.label}</div>
+          <div class="tracker-status" style="color:${statusColor}">${statusText}</div>
+        </div>`;
+    }).join("");
 }
+
+// ── Navigation ────────────────────────────────────────────────────────────────
 
 function selectWeek(w) {
   activeWeek = w;
   selectedDay = null;
-  render();
+  renderTabs();
+  renderGrid();
+  renderDetail();
 }
 
 function selectDay(i) {
-  selectedDay = selectedDay===i ? null : i;
+  selectedDay = selectedDay === i ? null : i;
   renderGrid();
   renderDetail();
-  if (selectedDay!==null) {
+  if (selectedDay !== null) {
     setTimeout(() => {
       document.getElementById("detailCard").scrollIntoView({ behavior:"smooth", block:"nearest" });
     }, 50);
@@ -490,7 +522,7 @@ function selectDay(i) {
 }
 
 function jumpTo(d) {
-  activeWeek = Math.floor(d/7);
+  activeWeek = Math.floor(d / 7);
   selectedDay = d;
   render();
   setTimeout(() => {
@@ -498,6 +530,7 @@ function jumpTo(d) {
   }, 80);
 }
 
+// ── Init ──────────────────────────────────────────────────────────────────────
 render();
 </script>
 </body>
