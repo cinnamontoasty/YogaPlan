@@ -110,8 +110,6 @@
 
   /* Grid */
   .grid-wrap { padding:14px; }
-  .day-names { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:5px; }
-  .day-name { text-align:center; font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; color:var(--text3); text-transform:uppercase; }
   .day-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
   .day-card {
     background:#0c1422; border:1px solid var(--border); border-radius:9px;
@@ -203,12 +201,7 @@
 
   <!-- Grid + detail -->
   <div class="grid-wrap" id="gridWrap">
-    <div class="day-names">
-      <div class="day-name">Mon</div><div class="day-name">Tue</div>
-      <div class="day-name">Wed</div><div class="day-name">Thu</div>
-      <div class="day-name">Fri</div><div class="day-name">Sat</div>
-      <div class="day-name">Sun</div>
-    </div>
+
     <div class="day-grid" id="dayGrid"></div>
     <div id="detailCard"></div>
   </div>
@@ -278,7 +271,6 @@ const SCHEDULE = (() => {
 })();
 
 const FOCUS_EMOJI = { "Full Body":"🧘", "Upper Body":"💪", "Lower Body":"🦵", "Core":"🔥" };
-const DAY_NAMES = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
 // ── State ─────────────────────────────────────────────────────────────────────
 
@@ -472,7 +464,7 @@ function renderDetail() {
       <div class="detail-sub">with ${w.trainer} · 10 minutes</div>
       ${pill}
       <div class="how-to"><strong>How to find it:</strong> ${w.note}</div>
-      <div class="detail-footer">Day ${selectedDay+1} of 28 · ${DAY_NAMES[selectedDay%7]}</div>
+      <div class="detail-footer">Day ${selectedDay+1} of 28</div>
     </div>`;
 }
 
